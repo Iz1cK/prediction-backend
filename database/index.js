@@ -1,7 +1,6 @@
-import pg from "pg";
-import dotenv from "dotenv";
+const pg = require("pg");
 
-dotenv.config();
+require("dotenv").config();
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -12,4 +11,4 @@ const db = new pg.Pool({
   ...(!isDev && { ssl: { rejectUnauthorized: false } }),
 });
 
-export default db;
+module.exports = db;
