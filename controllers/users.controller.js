@@ -14,20 +14,17 @@ const getUsers = catchAsync(async (req, res) => {
 
 const login = catchAsync(async (req, res) => {
   const { username, password } = req.body;
-  console.log(password);
   if (!username || !password)
     throw new ApiError(httpStatus.BAD_REQUEST, "Missing data!");
   const exists = await userModel.getUserByUsername(username);
   if (!exists)
     throw new ApiError(httpStatus.BAD_REQUEST, "User doesn't exist!");
   const match = bcrypt.compareSync(password, exists.password);
-  console.log(match);
   if (!match) throw new ApiError(httpStatus.BAD_REQUEST, "Wrong password!");
   const token = jwt.sign(
-    { username: exists.username, id: exists.userid },
+    { username: exists.username, userid: exists.userid },
     SECRET
   );
-  console.log(token);
   res.status(httpStatus.OK).send({
     status: "success",
     username: exists.username,

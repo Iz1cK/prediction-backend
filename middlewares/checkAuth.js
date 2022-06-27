@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
 dotenv.config();
-const SECRET = process.env.JWT_SECRET;
+const SECRET = process.env.SECRET;
 
 function verifyAccount(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -16,7 +16,7 @@ function verifyAccount(req, res, next) {
   try {
     const tokenData = jwt.verify(token, SECRET);
     req.username = tokenData.username;
-    req.id = tokenData.id;
+    req.userid = tokenData.userid;
     next();
   } catch (_error) {
     const error = new ApiError(401, "Invalid token");
@@ -24,4 +24,4 @@ function verifyAccount(req, res, next) {
   }
 }
 
-export default verifyAccount;
+module.exports = verifyAccount;
