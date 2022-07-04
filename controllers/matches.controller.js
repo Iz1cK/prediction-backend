@@ -25,7 +25,9 @@ const getMatches = catchAsync(async (req, res) => {
       date,
     });
   }
+  //   setTimeout(() => {
   res.status(httpStatus.OK).send({ result, status: "success" });
+  //   }, 2000);
 });
 
 module.exports = { getMatches };

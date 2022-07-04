@@ -9,13 +9,17 @@ const httpStatus = require("http-status");
 const makePredictions = catchAsync(async (req, res) => {
   const userid = req.userid;
   const predictions = req.body;
+  console.log(userid + ":", req.body);
   if (!predictions) throw new ApiError(httpStatus.BAD_REQUEST, "Missing info!");
   let results = [];
   for (let i = 0; i < predictions.length; i++) {
     const { matchid, prediction } = predictions[i];
+    console.log("----------------");
+    console.log(matchid, prediction);
     if (isNaN(prediction)) {
       const remove = await predictionsModel.removePrediction(userid, matchid);
       results.push(remove);
+      console.log("removed:", remove);
     }
     const check = await predictionsModel.checkIfExists(userid, matchid);
     if (check) {
