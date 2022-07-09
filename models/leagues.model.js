@@ -5,4 +5,9 @@ const getLeagueById = (id) =>
     .query(`SELECT * FROM leagues WHERE leagueid = $1`, [id])
     .then(({ rows }) => rows[0]);
 
-module.exports = { getLeagueById };
+const getLeagueByName = (name) =>
+  db
+    .query(`SELECT * FROM leagues WHERE name = $1`, [name])
+    .then(({ rows }) => rows[0]);
+
+module.exports = { getLeagueById, getLeagueByName };

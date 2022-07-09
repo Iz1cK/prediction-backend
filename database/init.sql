@@ -49,9 +49,9 @@ VALUES
 ('Kuala','$2b$10$ErNLJE7wRRIExTPAhlQ.0.ZNJBy1VeHAIg93ae2ZD27qH6cRw51uy','durd2001@gmail.com','true'),
 ('Nur','$2a$10$.FBK6i3nvw11tB2hLtqKHO7TDPpdMPCfH.H4DzflQW9tJ/c.V7UZq','nur.awad795@gmail.com','true');
 
-INSERT INTO leagues (name) 
-VALUES ('LEC'),
-('LCS');
+INSERT INTO leagues (name,slug) 
+VALUES ('LEC','lec'),
+('LCS','lcs');
 
 INSERT INTO teams (leagueid,name,code,image,wins,loses)
 VALUES 
