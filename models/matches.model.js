@@ -11,4 +11,4 @@ const insertNewMatch = (team1id, team2id, winnderid, date, leagueid, format) =>
     )
     .then(({ rows }) => rows[0]);
 
-module.exports = { getAllMatches };
+module.exports = { getAllMatches, insertNewMatch };
