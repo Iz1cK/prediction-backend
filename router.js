@@ -48,15 +48,9 @@ router.get(
           const team1id = await teamsModel.getTeamByCode(
             event.match.teams[0].code
           );
-          //   const team1id = (
-          //     await teamsModel.getTeamByCode(event.match.teams[0].code)
-          //   ).teamid;
           const team2id = await teamsModel.getTeamByCode(
             event.match.teams[1].code
           );
-          //   const team2id = (
-          //     await teamsModel.getTeamByCode(event.match.teams[1].code)
-          //   ).teamid;
           const outcome = event.match.teams[0].result.outcome;
           const winnerid =
             outcome === "win" ? team1id : outcome === "loss" ? team2id : null;
@@ -67,8 +61,6 @@ router.get(
           console.log("leagueid", leagueid);
           const format = "Best Of " + event.match.strategy.count;
           return {
-            // team1id,
-            // team2id,
             teams: [team1id, team2id],
             winnerid,
             date,
