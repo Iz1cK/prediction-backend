@@ -12,6 +12,7 @@ CREATE TABLE users (
 
 CREATE TABLE leagues(
     leagueid SERIAL PRIMARY KEY,
+    slug VARCHAR(3),
     name VARCHAR(3)
 );
 
