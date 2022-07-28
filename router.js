@@ -58,7 +58,6 @@ router.get(
           const leagueid = await leaguesModel.getLeagueByName(
             event.league.name
           );
-          console.log("leagueid", leagueid);
           const format = "Best Of " + event.match.strategy.count;
           return {
             teams: [team1id, team2id],
