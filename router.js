@@ -27,6 +27,55 @@ router.post(
 
 router.get("/get-predictions", checkAuth, predictionsController.getPredictions);
 
+<<<<<<< HEAD
 router.get("/current-matches", matchesController.fetchMatches);
+=======
+router.get(
+  "/current-matches",
+  catchAsync(async (req, res) => {
+    console.log("origin: ", req);
+    const { events } = (
+      await axios.get(
+        "https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-GB&leagueId=98767991302996019%2C98767991299243165",
+        {
+          headers: {
+            "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
+          },
+        }
+      )
+    ).data.data.schedule;
+    const formattedEvents = await Promise.all(
+      events.map(async (event) => {
+        try {
+          const team1id = await teamsModel.getTeamByCode(
+            event.match.teams[0].code
+          );
+          const team2id = await teamsModel.getTeamByCode(
+            event.match.teams[1].code
+          );
+          const outcome = event.match.teams[0].result.outcome;
+          const winnerid =
+            outcome === "win" ? team1id : outcome === "loss" ? team2id : null;
+          const date = event.startTime;
+          const leagueid = await leaguesModel.getLeagueByName(
+            event.league.name
+          );
+          const format = "Best Of " + event.match.strategy.count;
+          return {
+            teams: [team1id, team2id],
+            winnerid,
+            date,
+            league: leagueid,
+            format,
+          };
+        } catch (e) {
+          console.log(e);
+        }
+      })
+    );
+    res.status(200).send({ result: formattedEvents });
+  })
+);
+>>>>>>> d4dbaf5ce604413cefabcf4226697389d6059d02
 
 module.exports = router;
