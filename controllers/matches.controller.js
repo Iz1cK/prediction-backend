@@ -5,6 +5,49 @@ const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
 
+const axios = require("axios").default;
+
+const fetchMatches = catchAsync(async (req, res) => {
+  const { events } = (
+    await axios.get(
+      "https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-GB&leagueId=98767991302996019%2C98767991299243165",
+      {
+        headers: {
+          "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z",
+        },
+      }
+    )
+  ).data.data.schedule;
+  const formattedEvents = await Promise.all(
+    events.map(async (event) => {
+      try {
+        const team1id = await teamsModel.getTeamByCode(
+          event.match.teams[0].code
+        );
+        const team2id = await teamsModel.getTeamByCode(
+          event.match.teams[1].code
+        );
+        const outcome = event.match.teams[0].result.outcome;
+        const winnerid =
+          outcome === "win" ? team1id : outcome === "loss" ? team2id : null;
+        const date = event.startTime;
+        const leagueid = await leaguesModel.getLeagueByName(event.league.name);
+        const format = "Best Of " + event.match.strategy.count;
+        return {
+          teams: [team1id, team2id],
+          winnerid,
+          date,
+          league: leagueid,
+          format,
+        };
+      } catch (e) {
+        console.log(e);
+      }
+    })
+  );
+  res.status(200).send({ result: formattedEvents });
+});
+
 const getMatches = catchAsync(async (req, res) => {
   const matches = await matchesModel.getAllMatches();
   let result = [];
@@ -25,9 +68,7 @@ const getMatches = catchAsync(async (req, res) => {
       date,
     });
   }
-  //   setTimeout(() => {
   res.status(httpStatus.OK).send({ result, status: "success" });
-  //   }, 2000);
 });
 
-module.exports = { getMatches };
+module.exports = { getMatches, fetchMatches };
