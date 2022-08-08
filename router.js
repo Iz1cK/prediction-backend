@@ -32,6 +32,7 @@ router.get("/get-predictions", checkAuth, predictionsController.getPredictions);
 router.get(
   "/current-matches",
   catchAsync(async (req, res) => {
+    console.log("origin: ", req);
     const { events } = (
       await axios.get(
         "https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-GB&leagueId=98767991302996019%2C98767991299243165",
