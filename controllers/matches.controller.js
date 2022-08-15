@@ -21,6 +21,7 @@ const fetchMatches = catchAsync(async (req, res) => {
   const formattedEvents = await Promise.all(
     events.map(async (event) => {
       try {
+        const matchid = event.match.id;
         const team1id = await teamsModel.getTeamByCode(
           event.match.teams[0].code
         );
@@ -33,6 +34,15 @@ const fetchMatches = catchAsync(async (req, res) => {
         const date = event.startTime;
         const leagueid = await leaguesModel.getLeagueByName(event.league.name);
         const format = "Best Of " + event.match.strategy.count;
+        matchesModel.insertNewMatch(
+          matchid,
+          team1id,
+          team2id,
+          outcome,
+          date,
+          leagueid,
+          format
+        );
         return {
           teams: [team1id, team2id],
           winnerid,

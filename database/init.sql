@@ -33,7 +33,8 @@ CREATE TABLE matches(
     winnerid INTEGER REFERENCES teams(teamid),
     date DATE DEFAULT CURRENT_DATE,
     leagueid INTEGER REFERENCES leagues(leagueid),
-    format VARCHAR(30)
+    format VARCHAR(30),
+    PRIMARY KEY (team1id, team2id, date)
 );
 
 CREATE TABLE predictions(
@@ -41,7 +42,8 @@ CREATE TABLE predictions(
     userid INTEGER REFERENCES users(userid),
     matchid INTEGER REFERENCES matches(matchid),
     prediction INTEGER REFERENCES teams(teamid),
-    result BOOLEAN
+    result BOOLEAN,
+    PRIMARY KEY(userid, matchid)
 );
 
 INSERT INTO users (username,password,email,active) 
