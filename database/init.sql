@@ -27,7 +27,7 @@ CREATE TABLE teams(
 );
 
 CREATE TABLE matches(
-    matchid SERIAL PRIMARY KEY,
+    matchid VARCHAR(50) UNIQUE,
     team1id INTEGER REFERENCES teams(teamid),
     team2id INTEGER REFERENCES teams(teamid),
     winnerid INTEGER REFERENCES teams(teamid),
@@ -38,9 +38,9 @@ CREATE TABLE matches(
 );
 
 CREATE TABLE predictions(
-    predictionid SERIAL PRIMARY KEY,
+    predictionid SERIAL,
     userid INTEGER REFERENCES users(userid),
-    matchid INTEGER REFERENCES matches(matchid),
+    matchid VARCHAR(50) REFERENCES matches(matchid),
     prediction INTEGER REFERENCES teams(teamid),
     result BOOLEAN,
     PRIMARY KEY(userid, matchid)
@@ -79,10 +79,10 @@ VALUES
 (2,'Cloud9','C9','http://static.lolesports.com/teams/1631820065346_cloud9-2021-worlds.png',2,3),
 (2,'CLG','CLG','http://static.lolesports.com/teams/1592590248482_CounterLogicGamingCLG-01-FullonDark.png',4,1);
 
-INSERT INTO matches (team1id,team2id,winnerid,leagueid,format)
-VALUES (1,2,1,1,'Best of 1');
+INSERT INTO matches (matchid,team1id,team2id,winnerid,leagueid,format)
+VALUES ('1',1,2,1,1,'Best of 1');
 
 INSERT INTO predictions (userid,matchid,prediction)
-VALUES (1,1,1);
+VALUES (1,'1',1);
 
 COMMIT;

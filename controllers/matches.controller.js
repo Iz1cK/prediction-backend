@@ -33,14 +33,15 @@ const fetchMatches = catchAsync(async (req, res) => {
           outcome === "win" ? team1id : outcome === "loss" ? team2id : null;
         const date = event.startTime;
         const leagueid = await leaguesModel.getLeagueByName(event.league.name);
+
         const format = "Best Of " + event.match.strategy.count;
         matchesModel.insertNewMatch(
           matchid,
-          team1id,
-          team2id,
-          outcome,
+          team1id.teamid,
+          team2id.teamid,
+          winnerid.teamid,
           date,
-          leagueid,
+          leagueid.leagueid,
           format
         );
         return {
