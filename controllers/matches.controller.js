@@ -45,6 +45,7 @@ const fetchMatches = catchAsync(async (req, res) => {
           format
         );
         return {
+          matchid,
           teams: [team1id, team2id],
           winnerid,
           date,
