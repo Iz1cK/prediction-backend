@@ -4,6 +4,7 @@ const router = require("express").Router();
 const usersController = require("./controllers/users.controller");
 const matchesController = require("./controllers/matches.controller");
 const predictionsController = require("./controllers/predictions.controller");
+const teamsController = require("./controllers/teams.controller");
 
 router.post("/login", usersController.login);
 router.get("/users", usersController.getUsers);
@@ -21,7 +22,14 @@ router.post(
 );
 
 router.get("/get-predictions", checkAuth, predictionsController.getPredictions);
-
 router.get("/current-matches", matchesController.fetchMatches);
+
+router.get(
+  "/worldcup-predictions",
+  checkAuth,
+  predictionsController.getWCPredictions
+);
+router.get("/worldcup-matches", matchesController.getWCMatches);
+router.get("/worldcup-teams", teamsController.getAllWorldCupTeams);
 
 module.exports = router;

@@ -83,4 +83,23 @@ const getMatches = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send({ result, status: "success" });
 });
 
-module.exports = { getMatches, fetchMatches };
+const getWCMatches = catchAsync(async (req, res) => {
+  const matches = await matchesModel.getAllWCMatches();
+  let result = [];
+  for (let i = 0; i < matches.length; i++) {
+    const match = matches[i];
+    const { team1id, team2id, winnerid, format, date, matchid } = match;
+    const team1 = await teamsModel.getWCTeamById(team1id);
+    const team2 = await teamsModel.getWCTeamById(team2id);
+    const winner = winnerid == team1id ? team1.code : team2.code;
+    result.push({
+      matchid,
+      teams: [team1, team2],
+      winner,
+      format,
+      date,
+    });
+  }
+  res.status(httpStatus.OK).send({ result, status: "success" });
+});
+module.exports = { getMatches, fetchMatches, getWCMatches };

@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS users,predictions,teams,leagues,matches CASCADE;
+DROP TABLE IF EXISTS users,predictions,teams,leagues,matches,worldcupteams,worldcuppredictions,worldcupmatches CASCADE;
 
 CREATE TABLE users (
     userid SERIAL PRIMARY KEY,
@@ -24,6 +24,32 @@ CREATE TABLE teams(
     image VARCHAR(255),
     wins INTEGER,
     loses INTEGER
+);
+
+CREATE TABLE worldcupteams(
+    teamid SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    code VARCHAR(4),
+    image VARCHAR(255)
+);
+
+CREATE TABLE worldcupmatches(
+    matchid SERIAL UNIQUE,
+    team1id INTEGER REFERENCES worldcupteams(teamid),
+    team2id INTEGER REFERENCES worldcupteams(teamid),
+    winnerid INTEGER REFERENCES worldcupteams(teamid),
+    date DATE DEFAULT CURRENT_DATE,
+    format VARCHAR(30),
+    PRIMARY KEY (team1id, team2id, date)
+);
+
+CREATE TABLE worldcuppredictions(
+    predictionid SERIAL,
+    userid INTEGER REFERENCES users(userid),
+    matchid INTEGER REFERENCES worldcupmatches(matchid),
+    prediction INTEGER REFERENCES worldcupteams(teamid),
+    result BOOLEAN,
+    PRIMARY KEY(userid, matchid)
 );
 
 CREATE TABLE matches(
@@ -84,5 +110,40 @@ VALUES ('1',1,2,1,1,'Best of 1');
 
 INSERT INTO predictions (userid,matchid,prediction)
 VALUES (1,'1',1);
+
+INSERT INTO worldcupteams (name,code,image)
+VALUES 
+('Argentina','ARG','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/ARG?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Australia','AUS','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/AUS?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Belgium', 'BEL','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/BEL?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Brazil','BRA','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/BRA?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Cameroon','CMR','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/CMR?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Canada','CAN','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/CAN?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Costa Rica','CRC','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/CRC?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Croatia','CRO','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/CRO?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Denmark','DEN','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/DEN?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Ecuador','ECU','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/ECU?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('England','ENG','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/END?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('France','FRA','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/FRA?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Germany','GER','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/GER?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Ghana','GHA','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/GHA?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Iran','IRN','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/IRN?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Japan','JPN','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/JPN?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Korea Republic','KOR','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/KOR?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Mexico','MEX','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/MEX?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Morocco','MAR','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/MAR?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Netherlands','NED','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/NED?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Poland','POL','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/POL?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Portugal','POR','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/POR?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Qatar','QAT','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/QAT?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Saudi Arabia','KSA','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/KSA?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Senegal','SEN','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/SEN?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Serbia','SRB','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/SRB?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Spain','ESP','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/ESP?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Switzerland','SUI','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/SUI?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Tunis','TUN','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/TUN?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('United States','USA','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/USA?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Uruguay','URU','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/URU?tx=c_fill,g_auto,q_auto,w_94,h_62'),
+('Wales','WAL','https://cloudinary.fifa.com/api/v3/picture/flags-sq-4/WAL?tx=c_fill,g_auto,q_auto,w_94,h_62');
 
 COMMIT;
